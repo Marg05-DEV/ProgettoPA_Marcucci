@@ -1,0 +1,12 @@
+# Folder created when installing dependencies
+node_modules
+
+# Folder created when building the project
+dist
+
+# Environment variables file
+.env
+
+docker-compose.yml
+
+.gitignore

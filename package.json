@@ -1,0 +1,44 @@
+{
+    "name": "progettopa-marcucci",
+    "version": "1.0.0",
+    "description": "Progetto del corso di Programmazione Avanzata - Marcucci Giacomo",
+    "keywords": [],
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "license": "ISC",
+    "author": "Giacomo Marcucci",
+    "type": "commonjs",
+    "main": "index.js",
+    "directories": {
+        "test": "tests"
+    },
+    "scripts": {
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "build": "tsc",
+        "start": "node dist/index.js",
+        "buildAndStart": "tsc && node dist/index.js",
+        "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+    },
+    "dependencies": {
+        "dotenv": "^16.6.1",
+        "express": "^4.22.2",
+        "jsonwebtoken": "^9.0.2",
+        "jwks-rsa": "^3.2.0",
+        "pg": "^8.11.3",
+        "pg-hstore": "^2.3.4",
+        "sequelize": "^6.37.5"
+    },
+    "devDependencies": {
+        "@types/express": "^4.17.21",
+        "@types/jest": "^29.5.12",
+        "@types/jsonwebtoken": "^9.0.6",
+        "@types/node": "^20.12.0",
+        "jest": "^29.7.0",
+        "ts-jest": "^29.1.2",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.4.5"
+    }
+}
