@@ -1,44 +1,47 @@
 {
-    "name": "progettopa-marcucci",
-    "version": "1.0.0",
-    "description": "Progetto del corso di Programmazione Avanzata - Marcucci Giacomo",
-    "keywords": [],
-    "repository": {
-        "type": "git",
-        "url": ""
-    },
-    "license": "ISC",
-    "author": "Giacomo Marcucci",
-    "type": "commonjs",
-    "main": "index.js",
-    "directories": {
-        "test": "tests"
-    },
-    "scripts": {
-        "test": "jest",
-        "test:watch": "jest --watch",
-        "build": "tsc",
-        "start": "node dist/index.js",
-        "buildAndStart": "tsc && node dist/index.js",
-        "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
-    },
-    "dependencies": {
-        "dotenv": "^16.6.1",
-        "express": "^4.22.2",
-        "jsonwebtoken": "^9.0.2",
-        "jwks-rsa": "^3.2.0",
-        "pg": "^8.11.3",
-        "pg-hstore": "^2.3.4",
-        "sequelize": "^6.37.5"
-    },
-    "devDependencies": {
-        "@types/express": "^4.17.21",
-        "@types/jest": "^29.5.12",
-        "@types/jsonwebtoken": "^9.0.6",
-        "@types/node": "^20.12.0",
-        "jest": "^29.7.0",
-        "ts-jest": "^29.1.2",
-        "ts-node": "^10.9.2",
-        "typescript": "^5.4.5"
-    }
+  "name": "progettopa_marcucci",
+  "version": "1.0.0",
+  "description": "Progetto per il corso di Programmazione Avanzata di Marcucci Giacomo",
+  "homepage": "https://github.com/Marg05-DEV/ProgettoPA_Marcucci#readme",
+  "bugs": {
+    "url": "https://github.com/Marg05-DEV/ProgettoPA_Marcucci/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marg05-DEV/ProgettoPA_Marcucci.git"
+  },
+  "license": "ISC",
+  "author": "Giacomo Marcucci",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "buildAndStart": "tsc && node dist/index.js",
+    "dev": "npx ts-node-dev --respawn --transpile-only src/index.ts"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "jwks-rsa": "^4.0.1",
+    "node-dijkstra": "^2.5.1",
+    "pg": "^8.21.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.8"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^25.9.1",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  }
 }
