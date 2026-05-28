@@ -1,10 +1,10 @@
-# Folder created when installing dependencies
+# Cartella creata quando si installano le dipendenze
 node_modules
 
-# Folder created when building the project
+# Cartella creata quando si compila il progetto
 dist
 
-# Environment variables file
+# File delle variabili di ambiente
 .env
 
 docker-compose.yml

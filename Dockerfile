@@ -1,22 +1,22 @@
-# Install  base image of node
+# Installa l'immagine base di Node
 FROM node:lts-alpine3.23
 
-# Set the work directory in the container
+# Imposta la directory di lavoro nel container
 WORKDIR /app
 
-# Copy project root content into container work directory
+# Copia il contenuto della root del progetto nella directory di lavoro del container
 COPY . .
 
-# Install project dependencies defined in package.json
+# Installa le dipendenze del progetto definite nel package.json
 RUN npm install
 
-# Compile Typescript project and send output JavaScript files to dist folder
+# Compila il progetto TypeScript e memorizza i file JavaScript di output nella cartella dist
 RUN npm run build
 
-# Expose the port on which the server will run
+# Espone la porta su cui il server verrà eseguito
 EXPOSE 3000
 
-# Define the command to run when starting the container. 
-# ENTRYPOINT force the user to run npm, while CMD provides the default arguments to npm, which can be overwritten when running the container.
+# Definisce il comando da eseguire all'avvio del container.
+# ENTRYPOINT forza l'utente a eseguire npm, mentre CMD fornisce gli argomenti di default a npm, che possono essere sovrascritti all'esecuzione del container.
 ENTRYPOINT ["npm"]
 CMD ["run", "start"]

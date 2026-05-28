@@ -1,28 +1,28 @@
 {
   "compilerOptions": {
-    // File Layout
+    // Layout dei file
     "rootDir": "./src",
     "outDir": "./dist",
 
-    // Environment Settings
-    "module": "nodenext", // Mpdule system to use. nod
-    "target": "ES2022", // JavaScript version to compile project to
+    // Impostazioni dell'ambiente
+    "module": "nodenext", // Sistema di moduli da utilizzare. 
+    "target": "ES2022", // Versione di JavaScript con cui compilare il progetto
     "types": [],
 
-    // Other Outputs
-    "sourceMap": true, // Generate .map files to map js files to ts files for debugging
+    // Altri output
+    "sourceMap": true, // Genera file .map per mappare i file js ai file ts. Utile per il debug
 
-    // Stricter Typechecking Options
+    // Opzioni di type checking più rigorose
     "noUncheckedIndexedAccess": true, 
     "exactOptionalPropertyTypes": true,
 
-    // Recommended Options
-    "strict": true, // Enable all strict checking: no Any variables (no type definition), manage null and undefined explicitly, check function types, etc.
+    // Opzioni consigliate
+    "strict": true, // Abilita tutti i controlli rigorosi: nessuna variabile Any (nessuna definizione di tipo), gestire null e undefined esplicitamente, verificare i tipi di funzione, ecc.
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
   },
-  "include": ["src/**/*.ts"], // include all .ts files in src directory(and subdirectories)
-  "exclude": ["node_modules", "dist"] // exclude files in node_modules (dependencies) and dist (compiled ts files in js) directories
+  "include": ["src/**/*.ts"], // includi tutti i file .ts nella cartella src (e nelle sottocartelle)
+  "exclude": ["node_modules", "dist"] // escludi le cartelle node_modules (dipendenze) e dist (file ts compilati in js)
 }

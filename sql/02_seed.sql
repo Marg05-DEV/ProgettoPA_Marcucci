@@ -1,4 +1,4 @@
--- seeding of users table
+-- seeding della tabella users
 
 INSERT INTO public.users (username, email, password, is_admin, qty_token) VALUES
 ('admin', 'admin@test.com', 'admin123', TRUE, 300),
@@ -6,16 +6,16 @@ INSERT INTO public.users (username, email, password, is_admin, qty_token) VALUES
 ('user2', 'user2@test.com', 'user123', FALSE, 300);
 
 
--- seeding of graphs table
+-- seeding della tabella graphs
 
 INSERT INTO public.graphs (user_id, name, description, cost) VALUES
-(2, 'Graph 1', 'Graph created by user1', 2.4), -- 8 nodes and 16 edges => cost = n_nodes * 0.20 + n_edges * 0.05 = 2.4
+(2, 'Graph 1', 'Graph created by user1', 2.4), -- 8 nodi e 16 archi => costo = n_nodi * 0.20 + n_archi * 0.05 = 2.4
 (3, 'Graph 2', 'Graph created by user2', 2.4);   
 
 
--- seeding of edges table
+-- seeding della tabella edges
 
--- seeding of edges of 'Graph 1' (graph_id = 1)
+-- seeding degli archi di 'Graph 1' (graph_id = 1)
 INSERT INTO public.edges (graph_id, start_node, end_node, weight) VALUES
 (1, 'A', 'B', 4),
 (1, 'A', 'C', 2),
@@ -34,7 +34,7 @@ INSERT INTO public.edges (graph_id, start_node, end_node, weight) VALUES
 (1, 'A', 'E', 9),
 (1, 'G', 'D', 4);
 
--- seeding of edges of 'Graph 2' (graph_id = 2)
+-- seeding degli archi di 'Graph 2' (graph_id = 2)
 INSERT INTO public.edges (graph_id, start_node, end_node, weight) VALUES
 (2, 'a', 'b', 3),
 (2, 'a', 'c', 7),

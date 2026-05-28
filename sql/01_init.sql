@@ -41,7 +41,7 @@ CREATE TABLE public.graphs (
 	description text NULL,
 	"cost" float8 DEFAULT 0 NOT NULL,
 	created_at timestamp DEFAULT now() NOT NULL,
-	updated_at timestamp DEFAULT now() NOT NULL, -- when graph is created, updated_at is equal to created_at. Then, created_at is blocked, while updated_at changes when the graph is updated
+	updated_at timestamp DEFAULT now() NOT NULL, -- quando il grafo viene creato, updated_at è uguale a created_at. Successivamente, created_at è bloccato, mentre updated_at cambia quando il grafo viene modificato
 	CONSTRAINT graphs_pkey PRIMARY KEY (graph_id),
 	CONSTRAINT fk_graphs_user FOREIGN KEY (user_id) REFERENCES public.users(user_id)
 );
@@ -72,14 +72,14 @@ CREATE TABLE public.edges (
 
 CREATE TABLE public.update_logs (
 	update_id serial4 NOT NULL,
-	requested_by int4 NOT NULL, -- user that requested the update
+	requested_by int4 NOT NULL, -- utente che ha richiesto l'aggiornamento
 	edge_id int4 NOT NULL,
 	status varchar(20) DEFAULT 'pending'::character varying NOT NULL,
 	old_weight float8 NOT NULL,
 	new_weight float8 NOT NULL,
-	resolved_by int4 NULL, -- user admin that resolves the update. Is NULL if the update is automatically resolved (under the threshold)
-	requested_at timestamp DEFAULT now() NOT NULL, -- timestamp of the update request by user
-	resolved_at timestamp NULL, -- timestamp of the update resolution by admin. Is equal to requested_at if the update is automatically resolved (under the threshold)
+	resolved_by int4 NULL, -- utente con ruolo admin che risolve la richiesta di modifica. È NULL se l'aggiornamento viene risolto automaticamente (sotto la soglia)
+	requested_at timestamp DEFAULT now() NOT NULL, -- timestamp della richiesta di aggiornamento da parte dell'utente
+	resolved_at timestamp NULL, -- timestamp della risoluzione della modifica da parte dell'admin. È uguale a requested_at se l'aggiornamento viene risolto automaticamente (sotto la soglia)
 	CONSTRAINT check_status CHECK (((status)::text = ANY ((ARRAY['pending'::character varying, 'approved'::character varying, 'rejected'::character varying])::text[]))),
 	CONSTRAINT update_logs_pkey PRIMARY KEY (update_id),
 	CONSTRAINT fk_logs_admin FOREIGN KEY (resolved_by) REFERENCES public.users(user_id),
