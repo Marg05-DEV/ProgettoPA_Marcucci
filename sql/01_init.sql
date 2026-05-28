@@ -1,3 +1,14 @@
+
+-- 'progetto_pa_db' database creation 
+
+CREATE DATABASE progetto_pa_db;
+
+
+-- 'progetto_pa_db' connection
+
+\connect progetto_pa_db;
+
+
 -- public.users definition
 
 -- Drop table
@@ -30,7 +41,7 @@ CREATE TABLE public.graphs (
 	description text NULL,
 	"cost" float8 DEFAULT 0 NOT NULL,
 	created_at timestamp DEFAULT now() NOT NULL,
-	updated_at timestamp DEFAULT now() NOT NULL,
+	updated_at timestamp DEFAULT now() NOT NULL, -- when graph is created, updated_at is equal to created_at. Then, created_at is blocked, while updated_at changes when the graph is updated
 	CONSTRAINT graphs_pkey PRIMARY KEY (graph_id),
 	CONSTRAINT fk_graphs_user FOREIGN KEY (user_id) REFERENCES public.users(user_id)
 );
