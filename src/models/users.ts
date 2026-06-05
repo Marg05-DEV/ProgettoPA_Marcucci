@@ -1,7 +1,7 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
-import type { Graphs, GraphsId } from './graphs';
-import type { UpdateLogs, UpdateLogsId } from './update-logs';
+import type { Graphs, GraphsId } from './Graphs';
+import type { UpdateLogs, UpdateLogsId } from './UpdateLogs';
 
 export interface UsersAttributes {
   userId: number;

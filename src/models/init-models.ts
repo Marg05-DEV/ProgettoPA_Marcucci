@@ -1,12 +1,12 @@
 import type { Sequelize } from "sequelize";
-import { Edges as _Edges } from "./edges";
-import type { EdgesAttributes, EdgesCreationAttributes } from "./edges";
-import { Graphs as _Graphs } from "./graphs";
-import type { GraphsAttributes, GraphsCreationAttributes } from "./graphs";
-import { UpdateLogs as _UpdateLogs } from "./update-logs";
-import type { UpdateLogsAttributes, UpdateLogsCreationAttributes } from "./update-logs";
-import { Users as _Users } from "./users";
-import type { UsersAttributes, UsersCreationAttributes } from "./users";
+import { Edges as _Edges } from "./Edges";
+import type { EdgesAttributes, EdgesCreationAttributes } from "./Edges";
+import { Graphs as _Graphs } from "./Graphs";
+import type { GraphsAttributes, GraphsCreationAttributes } from "./Graphs";
+import { UpdateLogs as _UpdateLogs } from "./UpdateLogs";
+import type { UpdateLogsAttributes, UpdateLogsCreationAttributes } from "./UpdateLogs";
+import { Users as _Users } from "./Users";
+import type { UsersAttributes, UsersCreationAttributes } from "./Users";
 
 export {
   _Edges as Edges,
