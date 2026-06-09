@@ -1,9 +1,9 @@
 -- seeding della tabella users
 
 INSERT INTO public.users (username, email, password, is_admin, qty_token) VALUES
-('admin', 'admin@test.com', 'admin123', TRUE, 300),
-('user1', 'user1@test.com', 'user123', FALSE, 300),
-('user2', 'user2@test.com', 'user123', FALSE, 300);
+('admin', 'admin@test.com', '$2a$12$.Ip.WvdkJ.Np86lzAJMam.vaA.15fUwTnC6Sya1Gu8Pdj4XuczHky', TRUE, 300), -- password: #Admin123
+('user1', 'user1@test.com', '$2a$12$HFCweKN/9PdVVlEoWnn4n.0Vh4Lih98CRBQNGIiIMarBN7M8DMe5C', FALSE, 300), -- password: #User123
+('user2', 'user2@test.com', '#$2a$12$SPyM3RBT/2T0HtG4f32nretuuoN5FDnN2ZBPJyx2nYYYSwO5TagYi', FALSE, 300); -- password: #User456
 
 
 -- seeding della tabella graphs
@@ -52,3 +52,12 @@ INSERT INTO public.edges (graph_id, start_node, end_node, weight) VALUES
 (2, 'd', 'g', 5),
 (2, 'f', 'g', 3),
 (2, 'h', 'e', 7);
+
+
+-- seeding della tabella update_logs
+
+-- seeding delle modifiche agli archi per 'Graph 1'
+INSERT INTO public.update_logs (requested_by, edge_id, status, old_weight, new_weight, resolved_by, resolved_at) VALUES
+(2, 1, 'pending', 4, 6.5, NULL, NULL),
+(2, 2, 'approved', 2.5, 2.0, 1, '2026-06-09 10:00:00'),
+(2, 3, 'approved', 5.5, 5.0, 1, '2026-06-09 11:30:00');

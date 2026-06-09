@@ -1,52 +1,52 @@
 import type { Sequelize } from "sequelize";
-import { Edges as _Edges } from "./Edges";
-import type { EdgesAttributes, EdgesCreationAttributes } from "./Edges";
-import { Graphs as _Graphs } from "./Graphs";
-import type { GraphsAttributes, GraphsCreationAttributes } from "./Graphs";
-import { UpdateLogs as _UpdateLogs } from "./UpdateLogs";
-import type { UpdateLogsAttributes, UpdateLogsCreationAttributes } from "./UpdateLogs";
-import { Users as _Users } from "./Users";
-import type { UsersAttributes, UsersCreationAttributes } from "./Users";
+import { Edge as _Edge } from "./Edge";
+import type { EdgeAttributes, EdgeCreationAttributes } from "./Edge";
+import { Graph as _Graph } from "./Graph";
+import type { GraphAttributes, GraphCreationAttributes } from "./Graph";
+import { UpdateLog as _UpdateLog } from "./UpdateLog";
+import type { UpdateLogAttributes, UpdateLogCreationAttributes } from "./UpdateLog";
+import { User as _User } from "./User";
+import type { UserAttributes, UserCreationAttributes } from "./User";
 
 export {
-  _Edges as Edges,
-  _Graphs as Graphs,
-  _UpdateLogs as UpdateLogs,
-  _Users as Users,
+  _Edge as Edge,
+  _Graph as Graph,
+  _UpdateLog as UpdateLog,
+  _User as User,
 };
 
 export type {
-  EdgesAttributes,
-  EdgesCreationAttributes,
-  GraphsAttributes,
-  GraphsCreationAttributes,
-  UpdateLogsAttributes,
-  UpdateLogsCreationAttributes,
-  UsersAttributes,
-  UsersCreationAttributes,
+  EdgeAttributes,
+  EdgeCreationAttributes,
+  GraphAttributes,
+  GraphCreationAttributes,
+  UpdateLogAttributes,
+  UpdateLogCreationAttributes,
+  UserAttributes,
+  UserCreationAttributes,
 };
 
 export function initModels(sequelize: Sequelize) {
-  const Edges = _Edges.initModel(sequelize);
-  const Graphs = _Graphs.initModel(sequelize);
-  const UpdateLogs = _UpdateLogs.initModel(sequelize);
-  const Users = _Users.initModel(sequelize);
+  const Edge = _Edge.initModel(sequelize);
+  const Graph = _Graph.initModel(sequelize);
+  const UpdateLog = _UpdateLog.initModel(sequelize);
+  const User = _User.initModel(sequelize);
 
-  UpdateLogs.belongsTo(Edges, { as: "edge", foreignKey: "edgeId"});
-  Edges.hasMany(UpdateLogs, { as: "updateLogs", foreignKey: "edgeId"});
-  Edges.belongsTo(Graphs, { as: "graph", foreignKey: "graphId"});
-  Graphs.hasMany(Edges, { as: "edges", foreignKey: "graphId"});
-  Graphs.belongsTo(Users, { as: "user", foreignKey: "userId"});
-  Users.hasMany(Graphs, { as: "graphs", foreignKey: "userId"});
-  UpdateLogs.belongsTo(Users, { as: "resolvedByUser", foreignKey: "resolvedBy"});
-  Users.hasMany(UpdateLogs, { as: "updateLogs", foreignKey: "resolvedBy"});
-  UpdateLogs.belongsTo(Users, { as: "requestedByUser", foreignKey: "requestedBy"});
-  Users.hasMany(UpdateLogs, { as: "requestedByUpdateLogs", foreignKey: "requestedBy"});
+  UpdateLog.belongsTo(Edge, { as: "edge", foreignKey: "edgeId"});
+  Edge.hasMany(UpdateLog, { as: "updateLogs", foreignKey: "edgeId"});
+  Edge.belongsTo(Graph, { as: "graph", foreignKey: "graphId"});
+  Graph.hasMany(Edge, { as: "edges", foreignKey: "graphId"});
+  Graph.belongsTo(User, { as: "user", foreignKey: "userId"});
+  User.hasMany(Graph, { as: "graphs", foreignKey: "userId"});
+  UpdateLog.belongsTo(User, { as: "resolvedByUser", foreignKey: "resolvedBy"});
+  User.hasMany(UpdateLog, { as: "updateLogs", foreignKey: "resolvedBy"});
+  UpdateLog.belongsTo(User, { as: "requestedByUser", foreignKey: "requestedBy"});
+  User.hasMany(UpdateLog, { as: "requestedByUpdateLogs", foreignKey: "requestedBy"});
 
   return {
-    Edges: Edges,
-    Graphs: Graphs,
-    UpdateLogs: UpdateLogs,
-    Users: Users,
+    Edge: Edge,
+    Graph: Graph,
+    UpdateLog: UpdateLog,
+    User: User,
   };
 }

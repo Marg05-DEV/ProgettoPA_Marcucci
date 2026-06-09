@@ -7,7 +7,9 @@ dotenv.config();
 const DB_NAME = process.env.POSTGRES_DB || "progetto_pa_db";
 const DB_USER = process.env.POSTGRES_USER || "user";
 const DB_PASSWORD = process.env.POSTGRES_PASSWORD;
-const DB_HOST = process.env.POSTGRES_HOST || "localhost";
+const DB_HOST = process.env.POSTGRES_HOST || "db";
+
+console.log("DB CONFIG:", { DB_NAME, DB_USER, DB_HOST, DB_PASSWORD: DB_PASSWORD });
 
 /**
  * Classe per la gestione della connessione al database.

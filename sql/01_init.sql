@@ -1,7 +1,7 @@
 
 -- 'progetto_pa_db' database creation 
 
-CREATE DATABASE progetto_pa_db;
+-- CREATE DATABASE progetto_pa_db;
 
 
 -- 'progetto_pa_db' connection
@@ -21,9 +21,10 @@ CREATE TABLE public.users (
 	email varchar(100) NOT NULL,
 	"password" varchar(255) NOT NULL,
 	is_admin bool DEFAULT false NOT NULL,
-	qty_token float8 DEFAULT 0 NOT NULL,
+	qty_token float8 DEFAULT 1000 NOT NULL,
 	created_at timestamp DEFAULT now() NOT NULL,
 	CONSTRAINT users_email_key UNIQUE (email),
+	CONSTRAINT users_username_key UNIQUE (username),
 	CONSTRAINT users_pkey PRIMARY KEY (user_id)
 );
 

@@ -1,7 +1,59 @@
+// enum string dei messaggi di errore
 export enum AppErrorMessages {
-    INVALID_JWT = "Il JWT fornito non è valido"
+    INTERNAL_ERROR = "Errore interno del server. Non è possibile procedere con la richiesta",
+    INVALID_JWT = "Il JWT fornito non è valido",
+    EMAIL_NOT_EXIST = "L'email fornita non è associata a nessun utente",
+    UNCORRECT_PASSWORD = "La password inserita non è corretta",
+    INVALID_EMAIL = "L'email fornita non è in un formato valido (deve contenere una \"@\" e un \".\" dopo seguito dal dominio)",
+    INVALID_PASSWORD = "La password fornita non è in un formato valido (deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale)",
+    INVALID_USERNAME = "Lo username fornito non è in un formato valido (deve essere lungo almeno 3 caratteri e al massimo 20, e può contenere solo lettere, numeri e underscore)",
+    EMAIL_ALREADY_EXISTS = "L'email fornita è già esistente e associata ad un altro utente",
+    USERNAME_ALREADY_EXISTS = "Lo username fornito è già esistente e associato ad un altro utente",
+    JWT_SECRET_MISSING = "Chiave privata JWT non configurata nel file env",
+    JWT_PUBLIC_MISSING = "Chiave pubblica JWT non configurata nel file env",
+    JWT_NOT_PROVIDED = "Token JWT non fornito",
+    NOT_OWNER_OR_ADMIN = "Non sei il proprietario di questa risorsa o un amministratore",
+    USER_NOT_FOUND = "Utente non trovato",
+    NOT_ADMIN = "Accesso riservato agli amministratori",
+    INVALID_TOKEN_AMOUNT = "Il numero di token deve essere un intero positivo",
+    UPDATE_NOT_FOUND = "La richiesta di aggiornamento non è stata trovata. L'id non è valido o non è presente nel database",
+    INVALID_STATUS = "Lo status deve essere 'approved' o 'rejected'",
+    UPDATE_NOT_PENDING = "La richiesta non è in stato pendente",
+    INVALID_ROLE = "Il campo isAdmin deve essere un valore booleano (true o false)",
+    ADMIN_SELF_ROLE_CHANGE = "Non puoi rimuovere il ruolo admin a te stesso",
+    INVALID_ID = "L'identificativo del fornito nel percorso non è valido. Deve essere un numero intero positivo",
+    INVALID_GRAPH_NAME = "Il nome del grafo fornito non è valido. Deve essere una stringa non vuota",
+    INVALID_GRAPH_DESCRIPTION = "La descrizione del grafo deve essere una stringa di testo valida",
+    INVALID_NODES_DATA = "La lista dei nodi non può essere vuota e deve essere inviata come array",
+    INVALID_NODES_FORMAT = "Formato dei nodi non valido. Tutti i nodi devono essere stringhe non vuote",
+    INVALID_EDGES_DATA = "La lista degli archi non può essere vuota e deve essere inviata come array",
+    INVALID_EDGES_FORMAT = "La struttura di uno o più archi non è valida. La struttura è {startNode: string, endNode: string, weight: number >= 0}",
+    EDGE_NODE_NOT_FOUND = "Uno o più archi fanno riferimento a nodi che non sono stati dichiarati nell'elenco dei nodi del grafo",
+    GRAPH_NOT_CONNECTED = "Il grafo fornito non è connesso. Deve esistere un percorso tra ogni coppia di nodi per poter far funzionare l'algoritmo di Dijkstra",
+    INVALID_RUN_NODES = "I nodi di partenza e di arrivo forniti per l'esecuzione dell'algoritmo non sono validi",
+    INVALID_DATE_FORMAT = "Il formato della data fornito nella query string non è valido. Utilizzare lo standard (YYYY-MM-DD)",
+    INVALID_FORMAT_TYPE = "Il formato sell'output richiesto non è supportato. I formati consentiti sono esclusivamente 'json' o 'csv'",
+    EDGE_NOT_FOUND = "L'arco associato a questa richiesta di modifica non esiste nel database",
+    GRAPH_NOT_FOUND = "Il grafo non è stato trovato.",
+    INSUFFICIENT_TOKENS = "Il suo credito è insufficiente per completare l'operazione.",
+    DUPLICATE_UPDATE_REQUEST = "Esiste già una richiesta di aggiornamento che fa parte di questo batch di modifiche per questo arco.",
+    EDGE_NOT_IN_GRAPH = "L'arco specificato non appartiene al grafo indicato.",
+    PENDING_REQUEST_EXISTS = "È già presente una richiesta di modifica in attesa di risoluzione per questo arco."
 }
 
+// enum string dei messaggi di successo
 export enum AppSuccessMessages {
-    
+    USER_LOGGED_IN = "Login effettuato con successo",
+    USER_REGISTERED = "Registrazione effettuata con successo",
+    USER_FOUND = "Utente trovato",
+    TOKENS_RECHARGED = "La ricarica dei token è stata eseguita con successo",
+    PENDING_UPDATE_RESOLVED = "La richiesta di modifica è stata risolta con successo",
+    ROLE_UPDATED = "Il ruolo dell'utente è stato aggiornato",
+    PENDING_REQUESTS_FOUND = "La lista delle richieste di modifica pendenti è stata recuperata con successo",
+    GRAPHS_FOUND = "La lista dei grafi registrati nel database è stato recuperata con successo",
+    GRAPH_CREATED = "Il nuovo grafo creato con successo. Il costo è stato addebitato sul tuo credito",
+    GRAPH_FOUND = "Il grafo ricercato è stato trovato",
+    SHORTEST_PATH_COMPUTED = "Il modello eseguito con successo. Il costo, pari a quello della creazione del modello, è stato addebitato sul tuo credito",
+    GRAPH_EDGES_UPDATED = "Le modifiche dei pesi degli archi sono state eseguite se sotto la soglia imposta. Le modifiche sopra la soglia devono essere risolte da un amministratore",
+    GRAPH_LOGS_FOUND = "la lista delle modifiche sul grafo selezionato è stata recuperata e filtrata con successo"
 }

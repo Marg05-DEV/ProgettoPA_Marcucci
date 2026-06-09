@@ -28,19 +28,23 @@ Realizzazione di un backend per la gestione della creazione e della valutazione 
 
 <!-- TOC --><a name="elenco-delle-rotte"></a>
 ### Elenco delle rotte
-| Rotta | Metodo HTTP | Ruolo | Descrizione |
-| :--- | :--- | :---: | :--- |
-| `/login` | POST | Utente non autenticato |  |
-| `/register` | POST | Utente non autenticato |  |
-| `/graph` | GET | Utente autenticato | Lista grafi |
-| `/graph` | POST | Utente autenticato | crea nuovo grafo |
-| `/graph/:graphId` | GET | Utente autenticato | Vedi grafo |
-| `/graph/:graphId/run` | POST | Utente autenticato | esegui |
-| `/graph/:graphId` | PATCH | Utente autenticato | modifica archi |
-| `/graph/:graphId/log` | GET | Admin | vedi lista modifiche |
-| `/graph/:graphId/log/:updateId` | PATCH | Admin | conferma richiesta |
-| `/user/:userId` | GET | Utente autenticato | vedi utente |
-| `/user/:userId/reloadToken` | POST | Admin |  |
+| Rotta | Metodo HTTP | Ruolo | Parametri | Descrizione |
+| :--- | :--- | :---: | :--- | :--- |
+| `/login` | POST | Nessuno |  |
+| `/register` | POST | Nessuno |  |
+| `/users/:userId` | GET | User | vedi utente |
+| `/admin/rechargeToken` | POST | Admin |  |
+| `/admin/pending` | PATCH | Admin | conferma richiesta |
+| `/admin/changeRole` | PATCH | Admin | conferma richiesta |
+| `/graphs` | GET | User | Lista grafi |
+| `/graphs` | POST | User | crea nuovo grafo |
+| `/graphs/:graphId` | GET | User | Vedi grafo |
+| `/graphs/:graphId/run` | POST | User | esegui |
+| `/graphs/:graphId` | PATCH | User | modifica archi |
+| `/graphs/:graphId/log?start=&end=&status=&format=` | GET | Admin | vedi lista modifiche |
+
+
+
 
 <!-- TOC --><a name="diagrammi-di-sequenza"></a>
 ### Diagrammi di sequenza
@@ -53,3 +57,7 @@ Realizzazione di un backend per la gestione della creazione e della valutazione 
 
 <!-- TOC --><a name="testing"></a>
 ## Testing 
+
+```bash
+npx sequelize-auto -h localhost -d progetto_pa_db -u user -x password -p 5432 -e postgres -o ./src/models -l ts --caseModel p --caseFile p --caseProp c --singularize 
+```

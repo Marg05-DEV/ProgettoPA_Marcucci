@@ -1,9 +1,9 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
-import type { Edges, EdgesId } from './Edges';
-import type { Users, UsersId } from './Users';
+import type { Edge, EdgeId } from './Edge';
+import type { User, UserId } from './User';
 
-export interface UpdateLogsAttributes {
+export interface UpdateLogAttributes {
   updateId: number;
   requestedBy: number;
   edgeId: number;
@@ -15,12 +15,12 @@ export interface UpdateLogsAttributes {
   resolvedAt?: Date;
 }
 
-export type UpdateLogsPk = "updateId";
-export type UpdateLogsId = UpdateLogs[UpdateLogsPk];
-export type UpdateLogsOptionalAttributes = "updateId" | "status" | "resolvedBy" | "requestedAt" | "resolvedAt";
-export type UpdateLogsCreationAttributes = Optional<UpdateLogsAttributes, UpdateLogsOptionalAttributes>;
+export type UpdateLogPk = "updateId";
+export type UpdateLogId = UpdateLog[UpdateLogPk];
+export type UpdateLogOptionalAttributes = "updateId" | "status" | "resolvedBy" | "requestedAt" | "resolvedAt";
+export type UpdateLogCreationAttributes = Optional<UpdateLogAttributes, UpdateLogOptionalAttributes>;
 
-export class UpdateLogs extends Model<UpdateLogsAttributes, UpdateLogsCreationAttributes> implements UpdateLogsAttributes {
+export class UpdateLog extends Model<UpdateLogAttributes, UpdateLogCreationAttributes> implements UpdateLogAttributes {
   updateId!: number;
   requestedBy!: number;
   edgeId!: number;
@@ -31,24 +31,24 @@ export class UpdateLogs extends Model<UpdateLogsAttributes, UpdateLogsCreationAt
   requestedAt!: Date;
   resolvedAt?: Date;
 
-  // UpdateLogs belongsTo Edges via edgeId
-  edge!: Edges;
-  getEdge!: Sequelize.BelongsToGetAssociationMixin<Edges>;
-  setEdge!: Sequelize.BelongsToSetAssociationMixin<Edges, EdgesId>;
-  createEdge!: Sequelize.BelongsToCreateAssociationMixin<Edges>;
-  // UpdateLogs belongsTo Users via resolvedBy
-  resolvedByUser!: Users;
-  getResolvedByUser!: Sequelize.BelongsToGetAssociationMixin<Users>;
-  setResolvedByUser!: Sequelize.BelongsToSetAssociationMixin<Users, UsersId>;
-  createResolvedByUser!: Sequelize.BelongsToCreateAssociationMixin<Users>;
-  // UpdateLogs belongsTo Users via requestedBy
-  requestedByUser!: Users;
-  getRequestedByUser!: Sequelize.BelongsToGetAssociationMixin<Users>;
-  setRequestedByUser!: Sequelize.BelongsToSetAssociationMixin<Users, UsersId>;
-  createRequestedByUser!: Sequelize.BelongsToCreateAssociationMixin<Users>;
+  // UpdateLog belongsTo Edge via edgeId
+  edge!: Edge;
+  getEdge!: Sequelize.BelongsToGetAssociationMixin<Edge>;
+  setEdge!: Sequelize.BelongsToSetAssociationMixin<Edge, EdgeId>;
+  createEdge!: Sequelize.BelongsToCreateAssociationMixin<Edge>;
+  // UpdateLog belongsTo User via resolvedBy
+  resolvedByUser!: User;
+  getResolvedByUser!: Sequelize.BelongsToGetAssociationMixin<User>;
+  setResolvedByUser!: Sequelize.BelongsToSetAssociationMixin<User, UserId>;
+  createResolvedByUser!: Sequelize.BelongsToCreateAssociationMixin<User>;
+  // UpdateLog belongsTo User via requestedBy
+  requestedByUser!: User;
+  getRequestedByUser!: Sequelize.BelongsToGetAssociationMixin<User>;
+  setRequestedByUser!: Sequelize.BelongsToSetAssociationMixin<User, UserId>;
+  createRequestedByUser!: Sequelize.BelongsToCreateAssociationMixin<User>;
 
-  static initModel(sequelize: Sequelize.Sequelize): typeof UpdateLogs {
-    return UpdateLogs.init({
+  static initModel(sequelize: Sequelize.Sequelize): typeof UpdateLog {
+    return UpdateLog.init({
     updateId: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
