@@ -257,37 +257,229 @@ Restituisce la lista di tutte le modifiche effettuate su un grafo. Supporta filt
 
 #### M(V)C - Model View Controller (senza View)
 
-Il pattern MVC è stato adattato al contesto di un'API REST. Il **Controller** riceve le richieste HTTP da Express e estrae i dati dal body/params, il **Service** contiene tutta la logica di business e di validazione, mentre il **Model** (fornito da Sequelize) rappresenta la struttura dei dati. Questo separazione di responsabilità rende il codice modulare, testabile e facilmente manutenibile. Ogni rotta è gestita da un controller dedicato (AuthController, UserController, AdminController, GraphController) che delega la logica al corrispondente service.
+Il pattern MVC organizza l'applicazione in tre strati logici distinti. Il *Controller* funge da intermediario tra la View (che perè, essendo un progetto backend, non è implemenato. Possiamo immaginare Postman come la view da cui riceviamo le richieste) ed il Model. Il *Model*, integrato tramite l'ORM Sequelize, definisce lo schema e le regole di persistenza dei dati. Questa separazione elimina la dipendenza tra l'interfaccia (o il client API) e la logica interna, permettendo di modificare la struttura dei dati senza impattare sul flusso di controllo. Inoltre, prima del controller, la richiesta viene intercettata dai metodi di middleware che effettuano una prima validazione e successivamente le rotte inviano la richiesta al controller. In questo progetto è stato anche aggiunto un o strato aggiuntivo: il Service.
 
 #### Service Layer
 
-Il **Service Layer** incapsula la logica di business dell'applicazione, fungendo da intermediario tra il Controller e il DAO. Ogni service (AuthService, UserService, AdminService, GraphService) contiene metodi che orchestrano operazioni complesse, validano i dati, e coordinano l'interazione con i DAO. Questo pattern consente una testabilità più semplice poiché la logica di business è isolata dalle richieste HTTP. Il service è responsabile di calcoli complessi come la formula di aggiornamento esponenziale dei pesi, la gestione dei token, e l'esecuzione dell'algoritmo di Dijkstra.
+Il Service Layer è stato implementato per separare la logica di business dai dettagli dell'infrastruttura gestiti dal controller. Nei Servici sono implomentate funzioni come la formula di aggiornamento esponenziale dei pesi, le logiche di calcolo di Dijkstra e le regole di business per la gestione dei token. Il Service Layer ha anche il ruolo di coordinatore tra i dati (DAO) e l'esposizione (Controller).
 
 #### DAO - Data Access Object
 
-Il **DAO Pattern** fornisce un'astrazione per l'accesso ai dati del database. Ogni entità del sistema (User, Graph, Edge, UpdateLog) ha un DAO corrispondente che implementa l'interfaccia generica `IDao<T>`. Questo isolamento del codice di accesso ai dati dal resto dell'applicazione facilita il cambio del database e rende i test più semplici attraverso il mocking. I DAO utilizzano Sequelize per le operazioni CRUD e gestiscono gli errori del database, sollevando eccezioni personalizzate che vengono catturate dai service.
+Il *DAO Pattern* fornisce un'astrazione per l'accesso ai dati del database. Ogni entità del sistema (User, Graph, Edge, UpdateLog) ha un DAO corrispondente che implementa l'interfaccia generica `IDao<T>` che definisce le operazioni CRUD (eccetto delete che non era necessario). Questo isolamento del codice di accesso ai dati dal resto dell'applicazione facilita il cambio del database e rende i test più semplici attraverso il mocking. I DAO utilizzano Sequelize per le operazioni CRUD e gestiscono gli errori del database, sollevando eccezioni personalizzate che vengono catturate dai service.
+
+```ts
+/*
+    Interfaccia che definisce i metodi che le classi DAO devono implementare.
+    In particolare sono definite le operazioni CRUD (Create, Read, Update, Delete) per la gestione dei dati.
+*/
+
+export interface IDao<T>{
+    create(item: T): Promise<T>;
+    read(id: number): Promise<T | null>;
+    readAll(): Promise<T[]>; 
+    update(itemId: number, newData?: Partial<T>): Promise<T | null>;
+    // delete(itemId: number): Promise<boolean>;
+}
+```
 
 #### Chain of Responsibility (CoR)
 
-Il pattern **Chain of Responsibility** è implementato tramite il middleware di Express. Le rotte sono protette da una catena di middleware che vengono eseguiti sequenzialmente: ad esempio, la rotta `/admin/rechargeToken` richiede `[checkJwt, checkAdmin, checkEmail, checkAmount]`. Ogni middleware valida un aspetto specifico della richiesta e, se la validazione fallisce, passa un errore al prossimo handler. Se passa, delega al successivo. Questo pattern rende facile aggiungere nuove validazioni senza modificare il codice esistente.
+Il pattern *Chain of Responsibility* è implementato tramite il middleware di Express. Le rotte sono protette da una catena di middleware che vengono eseguiti sequenzialmente:. Ogni middleware valida un aspetto specifico della richiesta e, se la validazione fallisce, passa un errore al prossimo handler. Questo pattern rende facile aggiungere nuove validazioni senza modificare il codice esistente.
+- AuthRoutes.ts
+  ```ts
+  export const authRouter = Router();
+  const authController = new AuthController();
+
+  /**
+  * Rotta per il login. 
+  * 1. Riceve le credenziali (email e password)
+  * 2. Le passa alla validazione nel middleware 
+  * 3. Genera il token JWT di autenticazione
+  */
+  authRouter.post("/login", validateLogin, (req: Request, res: Response) => {
+      authController.login(req, res);
+  });
+
+
+  /**
+  * Rotta per la registrazione. 
+  * 1. Riceve le credenziali (username, email e password)
+  * 2. Le passa alla validazione nel middleware 
+  * 4. Aggiunge il nuovo utente al database
+  * 3. Genera il token JWT di autenticazione effetuando il login
+  */
+  authRouter.post("/register", validateRegister, (req: Request, res: Response) => {
+      authController.register(req, res);
+  });
+    ```
+
+
+- AuthMiddleware.ts
+  ```ts
+  // Pipline per la validazione dei dati di login (email e password)
+  export const validateLogin = [checkEmail, checkPassword]
+
+  // Pipline per la validazione dei dati di registrazione (username, email e password)
+  export const validateRegister = [checkUsername, checkEmail, checkPassword]
+  ```
 
 #### Factory Pattern
 
+Il *Factory Pattern* è stato utilizzato per la creazione centralizzata e standardizzata di oggetti.  In particolare è stato sfruttato per la gestione degli errori (`ErrorFactory`) e dei messaggi di successo (`SuccessFactory`): invece di generare errori grezzi in vari punti dell'applicazione, il sistema invoca la factory che istanzia un AppError coerente. Questo garantisce che ogni eccezione rispetti lo stesso formato (codice di stato, messaggio, payload), semplificando enormemente la gestione degli errori lato client e il debugging lato server.
+
+```ts
+/**
+ * Classe che utilizza il Factory pattern per istanziare oggetti della classe AppError
+ */
+export class ErrorFactory {
+  /**
+   * Metodo statico che restituisce un oggetto AppError 
+   * @param statusName valore dell'enum dei nomi degli errori 
+   * @returns oggetto AppError contenente lo stato dell'errore
+   */
+  static getStatus(statusName: string): AppError {
+    return new AppError(statusName);
+  }
+}
+
+/**
+ * Classe che utilizza il Factory pattern per istanziare oggetti della classe AppSuccess
+ */
+export class SuccessFactory {
+  /**
+   * Metodo statico che restituisce un oggetto AppSuccess 
+   * @param statusName valore dell'ennum dei nomi delle richieste completate con successo
+   * @param res oggetto Response per la risposta della richiesta
+   * @param successData dati da inviare nella risposta alla richiesta
+   * @returns oggetto AppSuccess contenente lo stato della richiesta completata con successo 
+   */
+  static getStatus(statusName: string, res?: Response,  successData?: SuccessDataStructure) {
+    const dataMap = successData;
+    return new AppSuccess(statusName, dataMap).send(res as Response);  
+  }
+}
+```
+
 #### Singleton Pattern
 
-Il **Singleton Pattern** è applicato ai Service e DAO, anche se non esplicitamente implementato come singleton classico. Ogni Controller istanzia il service una sola volta nel costruttore e lo riutilizza per tutte le operazioni, garantendo che esista una sola istanza per controller. Analogamente, ogni Service istanzia il DAO una sola volta nel costruttore. Questo pattern garantisce coerenza dello stato e rende efficiente l'utilizzo delle risorse, evitando istanze multiple e non necessarie.
+Il *Singleton Pattern* è stato sfruttato per stabilire la connessione con il database. Infatti sarebbe errato avere più oggetti Connection al db. percià, il pattern Singleton assicura che esista una sola istanza della classe Connection. Se l'oggetto non esiste viene istanziato altrimenti viene restituito l'oggetto già esistente. Per farlo si sfrutta una sorta di anti-pattern, cioè definire il costruttore come `private`:
+```ts
+/**
+ * Classe per la gestione della connessione al database.
+ * Sfrutta il patter Singleton per assicurare che venga creata una sola istanza di connessione durante l'esecuzione dell'applicazione.
+ */
+export class DBConnection {
+    private static instance: DBConnection | null = null; 
+    private sequelize: Sequelize;
+
+    private constructor() {
+        this.sequelize = new Sequelize(
+            DB_NAME, 
+            DB_USER, 
+            DB_PASSWORD, 
+            {
+                host: DB_HOST,
+                dialect: "postgres"
+            }
+        );
+    }
+
+    /**
+     * Funzione per ottenere l'istanza di connessione al database. 
+     * Implementa il pattern Singleton: se l'istanza non esiste, la crea; altrimenti, restituisce quella esistente.
+     * 
+     * @returns {Sequelize} Restituisce l'istanza di Sequelize per la connessione al database. Se l'istanza non esiste, la crea prima di restituirla.
+     */
+    public static getInstance(): Sequelize {
+       
+        if(!DBConnection.instance) {
+            DBConnection.instance = new DBConnection();
+        }
+        return DBConnection.instance.sequelize;
+    }
+}
+
+```
 
 <!-- TOC --><a name="installazione-e-avvio"></a>
 ## Installazione e avvio
 
 #### 1. Clonazione della repository
+```bash
+git clone https://github.com/Marg05-DEV/ProgettoPA_Marcucci.git
 ```
 
-#### 1.
+#### 2. Creazione file delle variabili d'ambiente
+Crea un file .env nella cartella root di progetto, basandoti sul seguente esempio
+```
+# ===================================================================
+# Variabili di ambiente per la configurazione del database
+# ===================================================================
+# nome del db
+POSTGRES_DB=progetto_pa_db 
+
+# nome utente per connettersi al db
+POSTGRES_USER=user    
+
+# password per connettersi al db
+POSTGRES_PASSWORD=password 
+
+# host su cui è in esecuzione il db
+POSTGRES_HOST=db   
+
+# porta su cui il db è in ascolto
+POSTGRES_PORT=5432         
+
+# ===================================================================
+# Variabili di ambiente per la configurazione dell'applicazione
+# ===================================================================
+# porta su cui l'applicazione è in ascolto
+APP_PORT=3000              
+
+# ===================================================================
+# Chiavi pubbliche e private per firmare i token JWT
+# ===================================================================
+JWT_SECRET_KEY_PATH="./keys/jwtRS256.key"
+JWT_PUBLIC_KEY_PATH="./keys/jwtRS256.key.pub"
+
+# ===================================================================
+# Variabili di ambiente per costanti utilizzate nell'applicazione
+# ===================================================================
+# coefficiente utilizzato nella media esponenziale per assegnare un nuovo peso ad un arco
+ALPHA=0.8  
+```
+
+#### 3. Creazione delle chiavi
+Come visto dall'esempio precedente, è necessario generare una coppia di chiavi che, nell'esempio, sono state memorizzate in una cartella chiamata keys. Per farlo eseguire i seguenti comandi:
+
+```bash
+ssh-keygen -t rsa -b 4096 -m PEM -f keys/jwtRS256.key
+
+openssl rsa -in keys/jwtRS256.key -pubout -outform PEM -out keys/jwtRS256.key.pub
+```
+
+#### 4. Esecuzione con Docker Compose
+Quando sono stati fatti i passaggi precedenti, è possibile avviare il build delle immagini eseguendo il seguente comando nella cartella root del progetto
+```bash
+docker compose up --build
+```
+Questo comando implica anche il seeding del database con:
+- quattro utenti di cui uno admin, 
+- due grafi di 8 nodi e 16 archi
+- tre log entry di cui una pendente
 
 <!-- TOC --><a name="testing"></a>
 ## Testing 
-
+Nel progetto è stata implementata una serie di test automatizzati tramite jest. Sono 50 test divise in tre suite che si occupano di testare i middleware riguardanti admin, user e auth. Si sfruttano i mock per il funzionamento dei test. Si possono eseguire sul proprio progetto tramite il comando:
 ```bash
-npx sequelize-auto -h localhost -d progetto_pa_db -u user -x password -p 5432 -e postgres -o ./src/models -l ts --caseModel p --caseFile p --caseProp c --singularize 
+docker compose exec app npm test
 ```
+
+Di seguito è riportato l'esito del test:
+![Test Result](readme-asset/testResult.png)
+
+Si possono sfruttare anche gli export della collection e dell'enviroment di Postman per caricarli ed eseguire dei test delle rotte. Questi file si trovano nella cartella `./postman`
+
+---
+
+***MARCUCCI GIACOMO***
