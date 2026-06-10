@@ -177,7 +177,7 @@ Risolve una richiesta di modifica pendente approvando o rifiutando l'aggiornamen
 ---
 
 #### GET /admin/pending
-Restituisce la lista di tutte le richieste di modifica pendenti. Solo un admin può accedere a questa rotta. Supporta paginazione e filtri.
+Restituisce la lista di tutte le richieste di modifica pendenti. Solo un admin può accedere a questa rotta.
 
 ![Get Pending Sequence Diagram](readme-asset/07GetPending.png)
 
@@ -238,17 +238,17 @@ Richiede la modifica dei pesi di uno o più archi di un grafo. Se la modifica ri
 ![Update Graph Edges Sequence Diagram](readme-asset/12UpdateGraphEdges.png)
 
 **Errori possibili:** `JWT_NOT_PROVIDED`, `INVALID_JWT`, `INVALID_ID`, `INVALID_UPDATE_DATA`, `INVALID_UPDATE_FORMAT`, `GRAPH_NOT_FOUND`, `EDGE_NOT_FOUND`, `WEIGHT_OUT_OF_RANGE`, `TOKENS_FINISHED`, `INTERNAL_SERVER_ERROR`
-**Successo:** `GRAPH_EDGES_UPDATED` (HTTP 200) - Ritorna il grafo aggiornato o la lista di UpdateLog creati se in attesa di approvazione
+**Successo:** `GRAPH_EDGES_UPDATED` (HTTP 200) - Ritorna la lista di UpdateLog creati con il rispettivo status
 
 ---
 
 #### GET /graphs/:id/log
-Restituisce la lista di tutte le modifiche effettuate su un grafo. Supporta filtri per data di modifica (startDate, endDate) e formato di output (JSON o CSV). Solo gli utenti autorizzati possono accedere.
+Restituisce la lista di tutte le modifiche effettuate su un grafo. Supporta filtri per data di modifica (startDate, endDate) e formato di output (JSON o CSV).
 
 ![Update Log Graph Sequence Diagram](readme-asset/13UpdateLogGraph.png)
 
 **Errori possibili:** `JWT_NOT_PROVIDED`, `INVALID_JWT`, `INVALID_ID`, `INVALID_DATE_FORMAT`, `INVALID_OUTPUT_FORMAT`, `GRAPH_NOT_FOUND`, `TOKENS_FINISHED`, `INTERNAL_SERVER_ERROR`, `CSV_GENERATION_ERROR`
-**Successo:** `GRAPH_LOGS_FOUND` (HTTP 200) - Ritorna la lista di UpdateLog filtrati in formato JSON o CSV
+**Successo:** `GRAPH_LOGS_FOUND` (HTTP 200) - Ritorna la lista di UpdateLog filtrati e in formato JSON o CSV
 
 <!-- TOC --><a name="design-pattern-utilizzati"></a>
 
