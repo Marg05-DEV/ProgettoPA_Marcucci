@@ -11,7 +11,7 @@ import { updateStatus } from "../enums/UpdateEdgeStatus";
  * @param res oggetto Response che può essere utilizzato per inviare una risposta al client
  * @param next oggetto NextFunction che può essere utilizzato per chiamare la funzione successiva nella pipline o per inviare un errore gestito dall'handler degli errori
  */
-const checkAdmin = (req: Request, res: Response, next: NextFunction) => {
+export const checkAdmin = (req: Request, res: Response, next: NextFunction) => {
     try {
         const { isAdmin } = decodeJwt(req);
         if (!isAdmin) {
@@ -29,7 +29,7 @@ const checkAdmin = (req: Request, res: Response, next: NextFunction) => {
  * @param res oggetto Response che può essere utilizzato per inviare una risposta al client
  * @param next oggetto NextFunction che può essere utilizzato per chiamare la funzione successiva nella pipline o per inviare un errore gestito dall'handler degli errori
  */
-const checkAmount = (req: Request, res: Response, next: NextFunction) => {
+export const checkAmount = (req: Request, res: Response, next: NextFunction) => {
     const { qtyToken } = req.body;
 
     if (!qtyToken || typeof qtyToken !== "number" || !Number.isInteger(qtyToken) || qtyToken <= 0) {
@@ -44,10 +44,10 @@ const checkAmount = (req: Request, res: Response, next: NextFunction) => {
  * @param res oggetto Response che può essere utilizzato per inviare una risposta al client
  * @param next oggetto NextFunction che può essere utilizzato per chiamare la funzione successiva nella pipline o per inviare un errore gestito dall'handler degli errori
  */
-const checkUpdateId = (req: Request, res: Response, next: NextFunction) => {
+export const checkUpdateId = (req: Request, res: Response, next: NextFunction) => {
     const { updateId } = req.body;
     if (!updateId || typeof updateId !== "number" || !Number.isInteger(updateId) || updateId <= 0) {
-        return next(ErrorFactory.getStatus(AppErrorNames.UPDATE_NOT_FOUND));
+        return next(ErrorFactory.getStatus(AppErrorNames.INVALID_ID));
     }
     next();
 };
@@ -58,7 +58,7 @@ const checkUpdateId = (req: Request, res: Response, next: NextFunction) => {
  * @param res oggetto Response che può essere utilizzato per inviare una risposta al client
  * @param next oggetto NextFunction che può essere utilizzato per chiamare la funzione successiva nella pipline o per inviare un errore gestito dall'handler degli errori
  */
-const checkStatus = (req: Request, res: Response, next: NextFunction) => {
+export const checkStatus = (req: Request, res: Response, next: NextFunction) => {
     const { status } = req.body;
     if (!status || typeof status !== "string") {
         return next(ErrorFactory.getStatus(AppErrorNames.INVALID_STATUS));
@@ -75,7 +75,7 @@ const checkStatus = (req: Request, res: Response, next: NextFunction) => {
  * @param res oggetto Response che può essere utilizzato per inviare una risposta al client
  * @param next oggetto NextFunction che può essere utilizzato per chiamare la funzione successiva nella pipline o per inviare un errore gestito dall'handler degli errori
  */
-const checkIsAdminField = (req: Request, res: Response, next: NextFunction) => {
+export const checkIsAdminField = (req: Request, res: Response, next: NextFunction) => {
     const { isAdmin } = req.body;
     if (typeof isAdmin !== "boolean") {
         return next(ErrorFactory.getStatus(AppErrorNames.INVALID_ROLE));

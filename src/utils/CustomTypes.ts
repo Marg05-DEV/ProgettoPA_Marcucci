@@ -35,7 +35,6 @@ export interface BodyRequestUpdate {
  * Struttura dei campi con cui filtrare il log delle modifiche di un grafo
  */
 export interface UpdateLogFilter {
-    graphId: number,
     requestedAt?: {
         [Op.gte]?: Date;
         [Op.lte]?: Date;

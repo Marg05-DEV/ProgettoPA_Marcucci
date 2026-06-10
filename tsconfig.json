@@ -7,7 +7,7 @@
     // Impostazioni dell'ambiente
     "module": "nodenext", // Sistema di moduli da utilizzare. 
     "target": "ES2022", // Versione di JavaScript con cui compilare il progetto
-    "types": [],
+    "types": ["jest", "node"],
 
     // Altri output
     "sourceMap": true, // Genera file .map per mappare i file js ai file ts. Utile per il debug
@@ -23,6 +23,6 @@
     "moduleDetection": "force",
     "skipLibCheck": true,
   },
-  "include": ["src/**/*.ts"], // includi tutti i file .ts nella cartella src (e nelle sottocartelle)
+  "include": ["src/**/*.ts", "../tests/**/*.ts"], // includi tutti i file .ts nella cartella src (e nelle sottocartelle)
   "exclude": ["node_modules", "dist"] // escludi le cartelle node_modules (dipendenze) e dist (file ts compilati in js)
 }

@@ -212,6 +212,21 @@ export const errorsMap: Record<string, StatusStructure> = {
         name: AppErrorNames.PENDING_REQUEST_EXISTS,
         message: AppErrorMessages.PENDING_REQUEST_EXISTS,
         statusCode: StatusCodes.CONFLICT
+    },
+    [AppErrorNames.NODE_NOT_FOUND]: {
+        name: AppErrorNames.NODE_NOT_FOUND,
+        message: AppErrorMessages.NODE_NOT_FOUND,
+        statusCode: StatusCodes.NOT_FOUND
+    },
+    [AppErrorNames.INCOMPATIBLE_DATE]: {
+        name: AppErrorNames.INCOMPATIBLE_DATE,
+        message: AppErrorMessages.INCOMPATIBLE_DATE,
+        statusCode: StatusCodes.BAD_REQUEST
+    },
+    [AppErrorNames.TOKENS_FINISHED]: {
+        name: AppErrorNames.TOKENS_FINISHED,
+        message: AppErrorMessages.TOKENS_FINISHED,
+        statusCode: StatusCodes.UNAUTHORIZED
     }
 }
 

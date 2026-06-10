@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import { ErrorFactory } from "../status/StatusFactory";
 import { AppErrorNames } from "../enums/responseStatus/AppStatusNames";
 import { checkJwt } from "./UserMiddleware";
-import { updateStatus } from "../enums/UpdateEdgeStatus";
 import { outputFormat } from "../enums/UpdateLogsFormat";
 
 import { BodyRequestEdge, BodyRequestUpdate } from "../utils/CustomTypes";
@@ -144,7 +143,9 @@ export const validateRunGraph = (req: Request, res: Response, next: NextFunction
  * @param next oggetto NextFunction che può essere utilizzato per chiamare la funzione successiva nella pipline o per inviare un errore gestito dall'handler degli errori
  */
 export const validateUpdateEdges = (req: Request, res: Response, next: NextFunction) => {
-    const { updatedEdges } = req.body as { updatedEdges: BodyRequestUpdate[] };
+    const { updatedEdges } = req.body;
+
+    console.log(updatedEdges)
 
     if (!updatedEdges || !Array.isArray(updatedEdges) || updatedEdges.length === 0) {
         return next(ErrorFactory.getStatus(AppErrorNames.INVALID_EDGES_DATA));
@@ -178,6 +179,10 @@ export const validateLogFilters = (req: Request, res: Response, next: NextFuncti
     }
     if (endDate && (typeof endDate !== "string" || isNaN(Date.parse(endDate)))) {
         return next(ErrorFactory.getStatus(AppErrorNames.INVALID_DATE_FORMAT));
+    }
+
+    if (startDate && endDate && (Date.parse(startDate) > Date.parse(endDate))) {
+        return next(ErrorFactory.getStatus(AppErrorNames.INCOMPATIBLE_DATE))
     }
 
     if (typeof format !== "string" || (format !== outputFormat.JSON && format !== outputFormat.CSV)) {

@@ -1,0 +1,672 @@
+{
+  "info": {
+    "_postman_id": "b1d27403-ac10-4d59-af7e-3e8a898e3c60",
+    "name": "ProgettoPA_Marcucci",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53269813",
+    "_collection_link": "https://go.postman.co/collection/53269813-b1d27403-ac10-4d59-af7e-3e8a898e3c60?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "CorrectAdminLogin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.environment.set(\"JWT_TOKEN\", pm.response.json().data.token);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\":\"admin@test.com\", \"password\":\"#Admin123\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{HOST}}:{{PORT}}/auth/login",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "port": "{{PORT}}",
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CorrectUserLogin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.environment.set(\"JWT_TOKEN\", pm.response.json().data.token);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\":\"user3@test.com\", \"password\":\"#User789\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{HOST}}:{{PORT}}/auth/login",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "port": "{{PORT}}",
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CorrectNewUser",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.environment.set(\"JWT_TOKEN\", pm.response.json().data.token);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\":\"user3\", \"email\":\"user3@test.com\", \"password\":\"#User789\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{HOST}}:{{PORT}}/auth/register",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "port": "{{PORT}}",
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "CorrectGetUser",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JWT_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\":\"admin@test.com\", \"password\":\"#Admin123\"}"
+            },
+            "url": {
+              "raw": "http://{{HOST}}:{{PORT}}/users/:id",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "port": "{{PORT}}",
+              "path": [
+                "users",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "4"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "RechargeToken",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JWT_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\":\"user1@test.com\", \"qtyToken\": 70}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{HOST}}:{{PORT}}/admin/rechargeToken",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "port": "{{PORT}}",
+              "path": [
+                "admin",
+                "rechargeToken"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ChangeRole",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JWT_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\":\"user1@test.com\", \"isAdmin\": true}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{HOST}}:{{PORT}}/admin/changeRole",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "port": "{{PORT}}",
+              "path": [
+                "admin",
+                "changeRole"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ManagePendingRequest",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JWT_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"updateId\": 13, \"status\": \"approved\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{HOST}}:{{PORT}}/admin/pending",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "port": "{{PORT}}",
+              "path": [
+                "admin",
+                "pending"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PendingRequest",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JWT_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://{{HOST}}:{{PORT}}/admin/pending",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "port": "{{PORT}}",
+              "path": [
+                "admin",
+                "pending"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Graphs",
+      "item": [
+        {
+          "name": "AllGraphs",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JWT_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://{{HOST}}:{{PORT}}/graphs",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "port": "{{PORT}}",
+              "path": [
+                "graphs"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "NewGraph",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JWT_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Grafo di Rete Complesso\",\r\n    \"description\": \"Grafo di test con 6 nodi e 8 connessioni per validare le associazioni Sequelize\",\r\n    \"nodes\": [\r\n        \"Gateway\",\r\n        \"Switch_A\",\r\n        \"Switch_B\",\r\n        \"Server_DB\",\r\n        \"Workstation_1\",\r\n        \"Workstation_2\"\r\n    ],\r\n    \"edges\": [\r\n        {\r\n            \"startNode\": \"Gateway\",\r\n            \"endNode\": \"Switch_A\",\r\n            \"weight\": 1.2\r\n        },\r\n        {\r\n            \"startNode\": \"Gateway\",\r\n            \"endNode\": \"Switch_B\",\r\n            \"weight\": 1.5\r\n        },\r\n        {\r\n            \"startNode\": \"Switch_A\",\r\n            \"endNode\": \"Server_DB\",\r\n            \"weight\": 0.5\r\n        },\r\n        {\r\n            \"startNode\": \"Switch_A\",\r\n            \"endNode\": \"Workstation_1\",\r\n            \"weight\": 2.0\r\n        },\r\n        {\r\n            \"startNode\": \"Switch_B\",\r\n            \"endNode\": \"Server_DB\",\r\n            \"weight\": 0.6\r\n        },\r\n        {\r\n            \"startNode\": \"Switch_B\",\r\n            \"endNode\": \"Workstation_2\",\r\n            \"weight\": 2.1\r\n        },\r\n        {\r\n            \"startNode\": \"Workstation_1\",\r\n            \"endNode\": \"Workstation_2\",\r\n            \"weight\": 3.0\r\n        },\r\n        {\r\n            \"startNode\": \"Switch_A\",\r\n            \"endNode\": \"Switch_B\",\r\n            \"weight\": 1.0\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{HOST}}:{{PORT}}/graphs",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "port": "{{PORT}}",
+              "path": [
+                "graphs"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Graph",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JWT_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://{{HOST}}:{{PORT}}/graphs/:id",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "port": "{{PORT}}",
+              "path": [
+                "graphs",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "4"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "RunGraph",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JWT_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"startNode\": \"A\", \"endNode\": \"G\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{HOST}}:{{PORT}}/graphs/:id/run",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "port": "{{PORT}}",
+              "path": [
+                "graphs",
+                ":id",
+                "run"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Edges",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JWT_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"updatedEdges\": [\r\n    {\"edgeId\": 2, \"newWeight\": 7},\r\n    {\"edgeId\": 3, \"newWeight\": 10},\r\n    {\"edgeId\": 7, \"newWeight\": 10}\r\n\r\n]}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{HOST}}:{{PORT}}/graphs/:id",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "port": "{{PORT}}",
+              "path": [
+                "graphs",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "LogFiltered",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JWT_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"format\": \"json\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{HOST}}:{{PORT}}/graphs/:id/log?startDate=2026-10-10&endDate=2026-10-09",
+              "protocol": "http",
+              "host": [
+                "{{HOST}}"
+              ],
+              "port": "{{PORT}}",
+              "path": [
+                "graphs",
+                ":id",
+                "log"
+              ],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2026-10-10"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2026-10-09"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Home",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"message\": \"Hello!\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://{{HOST}}:{{PORT}}/",
+          "protocol": "http",
+          "host": [
+            "{{HOST}}"
+          ],
+          "port": "{{PORT}}",
+          "path": [
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

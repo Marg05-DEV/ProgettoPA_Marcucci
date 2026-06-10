@@ -3,8 +3,8 @@
 INSERT INTO public.users (username, email, password, is_admin, qty_token) VALUES
 ('admin', 'admin@test.com', '$2a$12$.Ip.WvdkJ.Np86lzAJMam.vaA.15fUwTnC6Sya1Gu8Pdj4XuczHky', TRUE, 300), -- password: #Admin123
 ('user1', 'user1@test.com', '$2a$12$HFCweKN/9PdVVlEoWnn4n.0Vh4Lih98CRBQNGIiIMarBN7M8DMe5C', FALSE, 300), -- password: #User123
-('user2', 'user2@test.com', '#$2a$12$SPyM3RBT/2T0HtG4f32nretuuoN5FDnN2ZBPJyx2nYYYSwO5TagYi', FALSE, 300); -- password: #User456
-
+('user2', 'user2@test.com', '$2a$12$g/pqgoxTqNtqlQdC3fwcUObwi/41syhUDoeEXXlJuQIArZ5Ip6.KW', FALSE, 300), -- password: #User456
+('user3', 'user3@test.com', '$2a$12$bXviI2TfJdtGAXky54Hs.eUX5YulvQGQ1puhZoDyrV97MUkZsJvA.', FALSE, 0); -- password: #User789
 
 -- seeding della tabella graphs
 

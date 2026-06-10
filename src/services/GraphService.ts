@@ -13,6 +13,7 @@ import { DBConnection } from "../db/Connection";
 import { NODE_COST, EDGE_COST, AUTO_APPROVED_THRESHOLD } from "../utils/Const";
 import LibGraph from "node-dijkstra"
 import { UpdateLogFilter } from "../utils/CustomTypes";
+import { getNodes } from "../utils/helperMethods";
 
 /**
  * classe GraphService che implementa metodi che si interfacciano con il db 
@@ -84,7 +85,7 @@ export class GraphService {
             
             const newGraph = await this.graphDao.create(graphData as Graph, t);
 
-            const edgesToCreate = data.edges.map(edge => ({
+            const edgesToCreate = data.edges.map((edge) => ({
                 graphId: newGraph.get("graphId"),
                 startNode: edge.startNode,
                 endNode: edge.endNode,
@@ -143,6 +144,13 @@ export class GraphService {
         // Creo le liste di adiacenza utile per creare il grafo come vuole la libreria node-dijkstra:
         // (node, {neighbours})
         const edges = graph.get("edges") as Edge[];
+
+        const nodes = getNodes(edges);
+
+        if (!nodes.includes(startNode) || !nodes.includes(endNode)) {
+            throw ErrorFactory.getStatus(AppErrorNames.NODE_NOT_FOUND);
+}
+
         edges.forEach((edge) => {
             const sNode = edge.get("startNode") as string;
             const eNode = edge.get("endNode") as string;
@@ -238,6 +246,7 @@ export class GraphService {
                 const proposedNewWeight = update.newWeight;
                 const absoluteDifference = Math.abs(proposedNewWeight - oldWeight);
                 const thresholdWeight = oldWeight * AUTO_APPROVED_THRESHOLD;
+                const computedWeight = (ALPHA * oldWeight) + ((1 - ALPHA) * proposedNewWeight);
 
                 if (absoluteDifference > thresholdWeight) {
                     const logData = {
@@ -245,7 +254,7 @@ export class GraphService {
                         edgeId: edge.get("edgeId"),
                         status: updateStatus.PENDING,
                         oldWeight: oldWeight,
-                        newWeight: proposedNewWeight
+                        newWeight: computedWeight
                     };
                     await this.updateLogDao.create(logData as any, t);
 
@@ -291,7 +300,7 @@ export class GraphService {
             throw ErrorFactory.getStatus(AppErrorNames.GRAPH_NOT_FOUND);
         }
 
-        const whereClause: UpdateLogFilter = { graphId: graphId };
+        const whereClause: UpdateLogFilter = {};
         
         if (filters.startDate || filters.endDate) {
             whereClause.requestedAt = {};
@@ -303,7 +312,7 @@ export class GraphService {
             }
         }
 
-        const logs = await this.updateLogDao.readAllFiltered(whereClause);
+        const logs = await this.updateLogDao.readAllFiltered(whereClause, graphId);
         
         return logs;
     }

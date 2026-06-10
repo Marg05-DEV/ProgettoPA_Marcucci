@@ -1,7 +1,7 @@
 import { Edge } from "../models/Edge";
 
 // creo la lista dei nodi sfruttando la non ripetibilità dei Set
-export const getEdges = (edges: Edge[]): Array<string> => {
+export const getNodes = (edges: Edge[]): Array<string> => {
     const nodesSet = new Set<string>();
     edges.forEach((edge) => {
         nodesSet.add(edge.get("startNode") as string);

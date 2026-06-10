@@ -4,6 +4,8 @@ import { AppErrorNames } from "../enums/responseStatus/AppStatusNames";
 import jwt from "jsonwebtoken";
 import fs from "fs";
 import { JwtPayload } from "../utils/CustomTypes";
+import { UserDAO } from "../dao/UserDAO";
+import { UnknownConstraintError } from "sequelize";
 
 /**
  * Funzione di middleware che controlla se il token JWT è presente
@@ -11,16 +13,31 @@ import { JwtPayload } from "../utils/CustomTypes";
  * @param res oggetto Response che può essere utilizzato per inviare una risposta al client
  * @param next oggetto NextFunction che può essere utilizzato per chiamare la funzione successiva nella pipline o per inviare un errore gestito dall'handler degli errori
  */
-export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
+export const checkJwt = async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
         return next(ErrorFactory.getStatus(AppErrorNames.JWT_NOT_PROVIDED));
     }
 
+    const userId = decodeJwt(req).userId
+
+    if (!userId) {
+            return next(ErrorFactory.getStatus(AppErrorNames.USER_NOT_FOUND));
+        }
+        
+    const userDao = new UserDAO();
+    const user = await userDao.read(userId);
+
+    if (!user || user.get("qtyToken") <= 0) {
+        return next(ErrorFactory.getStatus(AppErrorNames.TOKENS_FINISHED));
+    }
+
+
     next();
     
 };
+
 
 
 /**
@@ -29,7 +46,7 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
  * @param res oggetto Response che può essere utilizzato per inviare una risposta al client
  * @param next oggetto NextFunction che può essere utilizzato per chiamare la funzione successiva nella pipline o per inviare un errore gestito dall'handler degli errori
  */
-const checkOwnerOrAdmin = (req: Request, res: Response, next: NextFunction) => {
+export const checkOwnerOrAdmin = (req: Request, res: Response, next: NextFunction) => {
     try {
         const { userId, isAdmin } = decodeJwt(req);
         const paramId: number = parseInt(req.params.id as string);

@@ -71,8 +71,9 @@ export class GraphDAO implements IDao<Graph> {
      */
     async readAllWithEdges(): Promise<Graph[]> {
         try {
-            return await Graph.findAll({ include: { model: Edge } });
+            return await Graph.findAll({ include: { model: Edge, as: "edges" } });
         } catch (err) {
+            console.log(err)
             throw new AppError(AppErrorNames.INTERNAL_ERROR);
         }
     }
@@ -85,8 +86,9 @@ export class GraphDAO implements IDao<Graph> {
      */
     async readWithEdges(graphId: number): Promise<Graph | null> {
         try {
-            return await Graph.findByPk(graphId, { include: { model: Edge } });
+            return await Graph.findByPk(graphId, { include: { model: Edge, as: "edges" } });
         } catch (err) {
+            console.log(err)
             throw new AppError(AppErrorNames.INTERNAL_ERROR);
         }
     }

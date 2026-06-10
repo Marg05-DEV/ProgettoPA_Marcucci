@@ -15,7 +15,7 @@ export const checkEmail = (req: Request, res: Response, next: NextFunction) => {
     const email = req.body.email;
     
     if (!email || typeof email !== "string" || !emailRegex.test(email.trim())) {
-        next(ErrorFactory.getStatus(AppErrorNames.INVALID_EMAIL)); // errore email non valida
+        return next(ErrorFactory.getStatus(AppErrorNames.INVALID_EMAIL)); // errore email non valida
     }
 
     next(); // checkPassword()
@@ -27,14 +27,14 @@ export const checkEmail = (req: Request, res: Response, next: NextFunction) => {
  * @param res oggetto Response che può essere utilizzato per inviare una risposta al client
  * @param next oggetto NextFunction che può essere utilizzato per chiamare la funzione successiva nella pipline o per inviare un errore gestito dall'handler degli errori
  */
-const checkPassword = (req: Request, res: Response, next: NextFunction)  => {
+export const checkPassword = (req: Request, res: Response, next: NextFunction)  => {
     // Regex che valida la password: deve essere lunga almeno 8 caratteri, contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@!?_#$%&()*.,])[A-Za-z\d@!?_#$%&()*.,]{8,}$/;
 
     const password = req.body.password;
 
     if (!password || typeof password !== "string" || !passwordRegex.test(password.trim())) {
-        next(ErrorFactory.getStatus(AppErrorNames.INVALID_PASSWORD)); // errore password non valida
+        return next(ErrorFactory.getStatus(AppErrorNames.INVALID_PASSWORD)); // errore password non valida
     }
 
     next(); // AuthController.login()
@@ -46,14 +46,14 @@ const checkPassword = (req: Request, res: Response, next: NextFunction)  => {
  * @param res oggetto Response che può essere utilizzato per inviare una risposta al client
  * @param next oggetto NextFunction che può essere utilizzato per chiamare la funzione successiva nella pipline o per inviare un errore gestito dall'handler degli errori
  */
-const checkUsername = (req: Request, res: Response, next: NextFunction) => {
+export const checkUsername = (req: Request, res: Response, next: NextFunction) => {
     // Regex che valida lo username: deve essere lungo almeno 3 caratteri e al massimo 20, e può contenere solo lettere, numeri e underscore
     const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
 
     const username = req.body.username;
 
     if (!username || typeof username !== "string" || !usernameRegex.test(username.trim())) {
-        next(ErrorFactory.getStatus(AppErrorNames.INVALID_USERNAME)); // errore username non valido
+        return next(ErrorFactory.getStatus(AppErrorNames.INVALID_USERNAME)); // errore username non valido
     }
 
     next(); // checkEmail()

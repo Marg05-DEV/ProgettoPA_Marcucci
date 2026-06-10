@@ -38,7 +38,10 @@ export enum AppErrorMessages {
     INSUFFICIENT_TOKENS = "Il suo credito è insufficiente per completare l'operazione.",
     DUPLICATE_UPDATE_REQUEST = "Esiste già una richiesta di aggiornamento che fa parte di questo batch di modifiche per questo arco.",
     EDGE_NOT_IN_GRAPH = "L'arco specificato non appartiene al grafo indicato.",
-    PENDING_REQUEST_EXISTS = "È già presente una richiesta di modifica in attesa di risoluzione per questo arco."
+    PENDING_REQUEST_EXISTS = "È già presente una richiesta di modifica in attesa di risoluzione per questo arco.",
+    NODE_NOT_FOUND = "Il node non è presente tra quelli del grafo",
+    INCOMPATIBLE_DATE = "La data di inizio non può essere successiva alla data di fine.",
+    TOKENS_FINISHED = "Hai esaurito i token a tua disposizione. Non puoi proseguire con la richeista. Chiedi ad un admin di effettuare una ricarica"
 }
 
 // enum string dei messaggi di successo

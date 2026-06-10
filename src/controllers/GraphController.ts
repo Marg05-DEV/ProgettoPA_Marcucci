@@ -6,7 +6,7 @@ import { AppSuccessNames, AppErrorNames } from "../enums/responseStatus/AppStatu
 import { decodeJwt } from "../middleware/UserMiddleware";
 import { BodyRequestEdge, BodyRequestUpdate, SuccessDataStructure } from "../utils/CustomTypes";
 import { Edge } from "../models/Edge";
-import { getEdges } from "../utils/helperMethods";
+import { getNodes } from "../utils/helperMethods";
 import { StatusCodes } from "http-status-codes";
 
 export class GraphController {
@@ -35,7 +35,7 @@ export class GraphController {
                     name: graph.get("name"),
                     description: graph.get("description") ?? "",
                     cost: graph.get("cost"),
-                    nodes: getEdges(edges), 
+                    nodes: getNodes(edges), 
                     edges: edges.map((edge) => ({
                         startNode: edge.get("startNode"),
                         endNode: edge.get("endNode"),
@@ -67,6 +67,7 @@ export class GraphController {
             const newGraph = await this.graphService.createGraph({name, description, nodes, edges, userId});
 
             const savedEdges = (newGraph as any).edges as Edge[] || [];
+            const resNodes = getNodes(savedEdges);
 
             const responseData = {
                 graphId: newGraph.get("graphId"),
@@ -74,7 +75,7 @@ export class GraphController {
                 description: newGraph.get("description") ?? "",
                 cost: newGraph.get("cost"),
                 remainingTokens: (newGraph as any).remainingTokens,
-                nodes: getEdges(edges), 
+                nodes: resNodes, 
                 edges: savedEdges.map((edge) => ({
                     edgeId: edge.get("edgeId"),
                     startNode: edge.get("startNode"),
@@ -113,7 +114,7 @@ export class GraphController {
                 name: graph.get("name"),
                 description: graph.get("description") ?? "",
                 cost: graph.get("cost"),
-                nodes: getEdges(savedEdges),
+                nodes: getNodes(savedEdges),
                 edges: savedEdges.map((edge) => ({
                     edgeId: edge.get("edgeId"),
                     startNode: edge.get("startNode"),
@@ -143,7 +144,7 @@ export class GraphController {
                 throw ErrorFactory.getStatus(AppErrorNames.INVALID_ID); 
             }
 
-            const { startNode, endNode } = req.body as { startNode: string, endNode: string };
+            const { startNode, endNode } = req.body;
             const userId = decodeJwt(req).userId;
 
             const result = await this.graphService.executeGraph(id, startNode, endNode, userId);

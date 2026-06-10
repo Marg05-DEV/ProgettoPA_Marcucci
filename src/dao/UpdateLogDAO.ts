@@ -1,5 +1,6 @@
 import { IDao } from "./IDao";
 import { UpdateLog } from "../models/UpdateLog";
+import { Edge } from "../models/Edge";
 import { AppError } from "../status/StatusClasses";
 import { AppErrorNames } from "../enums/responseStatus/AppStatusNames";
 import { Transaction } from "sequelize";
@@ -71,6 +72,7 @@ export class UpdateLogDAO implements IDao<UpdateLog> {
         try {
             return await UpdateLog.findAll({ where: {status: status}});
         } catch (err) {
+            console.log(err);
             throw new AppError(AppErrorNames.INTERNAL_ERROR);
         }
     }
@@ -80,10 +82,13 @@ export class UpdateLogDAO implements IDao<UpdateLog> {
      * @param whereClause contiene le condizioni con cui filtrare
      * @returns Un oggetto Promise che se risolta restituisce un array di oggetti UpdateLog,altrimenti potrebbe esser lanciato un errore se al richiesta non va a buon fine. Se non sono presenti modifiche degli archi nel database, l'array restituito è vuoto.
      */
-    async readAllFiltered(whereClause: any): Promise<UpdateLog[]> {
+    async readAllFiltered(whereClause: any, graphId: number): Promise<UpdateLog[]> {
         try{
-            return await UpdateLog.findAll({ where: whereClause });
+            return await UpdateLog.findAll({ 
+                include: { model: Edge, as: "edge", required: true, where: { graphId: graphId }},
+                where: whereClause });
         } catch (err) {
+            console.log(err);
             throw new AppError(AppErrorNames.INTERNAL_ERROR);
         }
     }
